@@ -24,8 +24,8 @@ public class SortDao {
 		    while(st.next()==true) {
 		    	sort.add(st.getString(3));
 		    }
+		      st.close();
 	    	  ps.close();
-	     	 conn.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -34,6 +34,25 @@ public class SortDao {
         return sort;
     	 
       }
-
+      public List<String>  getAllSort() {
+    	  conn=DBUtil.getInstance();
+           sort =new ArrayList<String>();
+    	  String sql="select lsort from sort where sort!='首页'";
+    	  try {
+			ps=conn.prepareStatement(sql);
+		    st=ps.executeQuery();
+		    while(st.next()==true) {
+		    	sort.add(st.getString(1));
+		    }
+		      st.close();
+	    	  ps.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			
+		}
+        return sort;
+    	 
+      }
       
 }

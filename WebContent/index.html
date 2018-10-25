@@ -1,0 +1,188 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+	
+	<base href="/myblog/">
+</head >
+<body ng-app="app" ng-controller="sort">
+<nav class="navbar navbar-default" role="navigation" >
+	<div class="container-fluid" style="width:1280px;margin:auto;">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="/myblog/">勒鑫</a>
+	</div>
+	<div >
+		<ul class="nav navbar-nav">
+			<li><a href="/myblog/">首页</a></li>
+			<li><a href="frontend">前端</a></li>
+			<li><a href="backend">后端</a></li>
+            <li><a href="database">数据库</a></li>
+            <li><a href="operation">运维</a></li>
+            <li><a href="essay">随笔</a></li>
+		</ul>
+	</div>
+	</div>
+</nav>
+
+<div ng-view></div>
+    <link rel="stylesheet" href="css/bootstrap.min.css">		
+	<script src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/angular.min.js"></script>
+	<script src="js/angular-route.min.js"></script>
+    <script>
+     var app=angular.module("app",['ngRoute']);
+     app.config(['$routeProvider','$locationProvider',function($routeProvider,$locationProvider){
+      $routeProvider
+      .when('/',{templateUrl:'main.html',controller:'main'})
+      .when('/:str',{templateUrl:'main.html',controller:'branch'})
+      .when('/:str/:sort',{template:'我是分类'})
+      .when('/article/id/:id',{templateUrl:'article.html',controller:'detail'})
+      .otherwise({redirectTo:'/'});
+      $locationProvider.html5Mode(true);
+     }]);
+     app.controller("sort",function($scope){
+    	 $scope.default=0;
+    	 $scope.onClick=function(index){
+    	      $scope.default=index; 
+     }
+     });
+     app.controller("main",function($scope,$http){
+    	 $("nav ul li").removeClass("active");
+    	 $("nav ul li:eq(0)").addClass("active");
+    	 $http({method:'post',
+ 		    url:'SortServlet',
+ 		    data:$.param({sort:"首页"}), 
+ 	  		headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset:utf-8' }
+ 	      }).then(function(request){
+ 		    	$scope.navs=request.data;
+ 		    });
+    	 $http({
+ 	  		method:"post",
+ 	  		url:"ArticleServlet",
+ 	  		headers: { 'Content-Type':'application/x-www-form-urlencoded;charset:utf-8' }
+ 	  	}).then(function(request){
+ 	            $scope.articles=request.data;
+ 	  	});
+     });
+	 app.controller("branch",function($scope,$http,$routeParams,$timeout){
+         var branchName=$routeParams.str;
+         console.log(branchName);
+         if(branchName=="frontend"){
+        	 $("nav ul li").removeClass("active");
+        	 $("nav ul li:eq(1)").addClass("active");
+         }
+         else if(branchName=="backend"){
+        	 $("nav ul li").removeClass("active");
+        	 $("nav ul li:eq(2)").addClass("active");
+         }
+         else if(branchName=="database"){
+        	 $("nav ul li").removeClass("active");
+        	 $("nav ul li:eq(3)").addClass("active");
+         }
+         else if(branchName=="operation"){
+        	 $("nav ul li").removeClass("active");
+        	 $("nav ul li:eq(4)").addClass("active");
+         }
+         else if(branchName=="essay"){
+        	 $("nav ul li").removeClass("active");
+        	 $("nav ul li:eq(5)").addClass("active");
+         }
+         
+         else{
+        	 $("nav ul li").removeClass("active");
+         }
+    	 $http({method:'post',
+ 		    url:'SortServlet',
+ 		    data:$.param({sort:branchName}), 
+ 	  		headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset:utf-8' }
+ 	      }).then(function(request){
+ 		    	$scope.navs=request.data;
+                 $timeout(function(){
+                 	var sort1=$('.left_nav ul li.active').text();
+                     $http({
+                     	 method:"post",
+                     	 url:"ArticleServlet",
+                     	 data:$.param({sort:sort1}),
+                     	 headers:{'content-Type':'application/x-www-form-urlencoded;charset:utf-8'}
+                      }).then(function(request){
+                     	 $scope.articles=request.data;                  	 
+                      });
+                 	},2);
+ 		    });
+         
+	 });
+	 app.controller("detail",function($scope,$http,$routeParams){
+		 var id=$routeParams.id;
+		 $http({
+			 method:"post",
+         	 url:"OnceArticleServlet",
+         	 data:$.param({id:id}), 
+         	headers:{'content-Type':'application/x-www-form-urlencoded;charset:utf-8'}
+		 }).then(function(request){
+			 console.log(request.data);
+			 $scope.article=request.data;
+		 })
+	 });
+	 
+	 
+    /* app.controller("sort",function($scope,$http,$timeout){
+    	    $http({method:'post',
+    		    url:'SortServlet',
+    		    data:$.param({sort:"首页"}), 
+    	  		headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset:utf-8' }
+    	      }).then(function(request){
+    		    	$scope.navs=request.data;
+    		    });
+    	    $http({
+    	  		method:"post",
+    	  		url:"ArticleServlet",
+    	  		headers: { 'Content-Type':'application/x-www-form-urlencoded;charset:utf-8' }
+    	  	}).then(function(request){
+    	            $scope.articles=request.data;
+    	  	});
+    	 $('nav ul>li').click(function(){
+    			$('nav ul>li').removeClass("active");
+    			$(this).addClass("active");	
+    			var str=$(this).text();
+    			$scope.default=0;
+    	 $http({method:'post',
+    		    url:'SortServlet',
+    		    data:$.param({sort:str}), 
+    	  		headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset:utf-8' }
+    	      }).then(function(request){
+    		    	$scope.navs=request.data;
+                    $timeout(function(){
+                    	var sort1=$('.left_nav ul li.active').text();
+                        $http({
+                        	 method:"post",
+                        	 url:"ArticleServlet",
+                        	 data:$.param({sort:sort1}),
+                        	 headers:{'content-Type':'application/x-www-form-urlencoded;charset:utf-8'}
+                         }).then(function(request){
+                        	 $scope.articles=request.data;
+                         });
+                    	},2);
+    		    });     
+    	 });
+         $scope.default=0;
+         $scope.onClick=function(index){
+           $scope.default=index; 
+           var sort=$scope.navs[index];
+          $http({
+         	 method:"post",
+         	 url:"ArticleServlet",
+         	 data:$.param({sort:sort}),
+         	 headers:{'content-Type':'application/x-www-form-urlencoded;charset:utf-8'}
+          }).then(function(request){
+         	 $scope.articles=request.data;
+          });
+         } 
+     });
+*/
+     
+    </script>
+    
+
+</body>
+</html>

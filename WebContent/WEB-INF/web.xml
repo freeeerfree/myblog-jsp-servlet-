@@ -15,6 +15,34 @@
   </servlet>
 <servlet-mapping>
     <servlet-name>sort</servlet-name>
-    <url-pattern>/SortServlet</url-pattern>
+    <url-pattern>/SortServlet</url-pattern>  
 </servlet-mapping>
+  <servlet>
+  <servlet-name>article</servlet-name>
+  <servlet-class>com.myblog.servlet.ArticleServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>article</servlet-name>
+    <url-pattern>/ArticleServlet</url-pattern>  
+</servlet-mapping>
+  <servlet>
+  <servlet-name>addArticle</servlet-name>
+  <servlet-class>com.myblog.servlet.AddArticleServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>addArticle</servlet-name>
+    <url-pattern>/AddArticleServlet</url-pattern>  
+</servlet-mapping>
+  <servlet>
+  <servlet-name>OneArticle</servlet-name>
+  <servlet-class>com.myblog.servlet.OnceArticleServlet</servlet-class>
+  </servlet>
+<servlet-mapping>
+    <servlet-name>OneArticle</servlet-name>
+    <url-pattern>/OnceArticleServlet</url-pattern>  
+</servlet-mapping>
+ <error-page>
+    <error-code>404</error-code>
+    <location>/</location>
+</error-page>
 </web-app>

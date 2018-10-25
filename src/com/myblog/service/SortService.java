@@ -10,8 +10,14 @@ public class SortService {
 	List<String> sort;
      public List<String> showSort(String head) {
     	 sd=new SortDao();
-    	 sort=new ArrayList();
+    	 sort=new ArrayList<String>();
     	 sort=sd.getSort(head);
     	 return sort;
+     }
+     public List<String> showSubject() {
+         sd=new SortDao();
+         sort=new ArrayList<String>();
+         sort=sd.getAllSort();
+         return sort;
      }
 }
