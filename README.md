@@ -1,3 +1,3 @@
 # myblog1
 我的博客
-jsp+servlet+bootstrap+ajax+mysql
+没个软用的代码，后面有时间在修正吧。
