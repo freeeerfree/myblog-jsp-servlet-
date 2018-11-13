@@ -1,23 +1,48 @@
 package com.myblog.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name="sort")
 public class Sort {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="id")
     int id;
-    String hSort;
-    String lSort;
-    public Sort(String hSort,String lSort) {
-    	this.hSort=hSort;
-    	this.lSort=lSort;
+    @Column(name="headSort")
+    String headSort;
+    @Column(name="leftSort")
+    String leftSort;
+    public Sort() {
+    	
     }
-    public String  getLSort() {
-         return lSort;
+    public Sort(int id,String headSort,String leftSort) {
+         this.id=id;
+         this.headSort=headSort;
+         this.leftSort=leftSort;
+        
     }
-    public void setLSort(String aSort) {
-    	this.lSort=aSort;
+    public void  setId(int id){
+    	this.id=id;
     }
-    public void setHSort(String aSort) {
-    	this.hSort=aSort;
+    public int getId() {
+    	return id;
     }
-    public String getHSort() {
-    	return hSort;
+    public String  getLeftSort() {
+         return leftSort;
     }
+    public void setLeftSort(String leftSort) {
+    	this.leftSort=leftSort;
+    }
+    public String getHeadSort() {
+    	return headSort;
+    }
+    public void setHeadSort(String headSort) {
+    	this.headSort=headSort;
+    }
+
 }

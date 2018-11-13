@@ -9,40 +9,31 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
-  <servlet>
-  <servlet-name>sort</servlet-name>
-  <servlet-class>com.myblog.servlet.SortServlet</servlet-class>
-  </servlet>
-<servlet-mapping>
-    <servlet-name>sort</servlet-name>
-    <url-pattern>/SortServlet</url-pattern>  
-</servlet-mapping>
-  <servlet>
-  <servlet-name>article</servlet-name>
-  <servlet-class>com.myblog.servlet.ArticleServlet</servlet-class>
-  </servlet>
-<servlet-mapping>
-    <servlet-name>article</servlet-name>
-    <url-pattern>/ArticleServlet</url-pattern>  
-</servlet-mapping>
-  <servlet>
-  <servlet-name>addArticle</servlet-name>
-  <servlet-class>com.myblog.servlet.AddArticleServlet</servlet-class>
-  </servlet>
-<servlet-mapping>
-    <servlet-name>addArticle</servlet-name>
-    <url-pattern>/AddArticleServlet</url-pattern>  
-</servlet-mapping>
-  <servlet>
-  <servlet-name>OneArticle</servlet-name>
-  <servlet-class>com.myblog.servlet.OnceArticleServlet</servlet-class>
-  </servlet>
-<servlet-mapping>
-    <servlet-name>OneArticle</servlet-name>
-    <url-pattern>/OnceArticleServlet</url-pattern>  
-</servlet-mapping>
- <error-page>
-    <error-code>404</error-code>
-    <location>/</location>
-</error-page>
+      <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring.xml</param-value>
+    </context-param>
+
+    <!-- 监听器作用：启动Web容器时，自动装配ApplicationContext的配置信息 -->
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+   <servlet>
+      <servlet-name>myblog</servlet-name>
+      <servlet-class>
+         org.springframework.web.servlet.DispatcherServlet
+      </servlet-class>
+              <init-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:myblog-servlet.xml</param-value>
+    </init-param>
+      <load-on-startup>1</load-on-startup>
+   </servlet>
+
+   <servlet-mapping>
+      <servlet-name>myblog</servlet-name>
+      <url-pattern>/</url-pattern>
+   </servlet-mapping>
+
+
 </web-app>

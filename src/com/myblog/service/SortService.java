@@ -1,23 +1,18 @@
 package com.myblog.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import com.myblog.dao.SortDao;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.myblog.dao.Impl.SortDaoImpl;
 
 public class SortService {
-	SortDao sd;
-	List<String> sort;
-     public List<String> showSort(String head) {
-    	 sd=new SortDao();
-    	 sort=new ArrayList<String>();
-    	 sort=sd.getSort(head);
-    	 return sort;
-     }
-     public List<String> showSubject() {
-         sd=new SortDao();
-         sort=new ArrayList<String>();
-         sort=sd.getAllSort();
-         return sort;
-     }
+	@Autowired
+	private SortDaoImpl sortDaoImpl;
+	public void setSortDaoImpl(SortDaoImpl sortDaoImpl) {
+		this.sortDaoImpl=sortDaoImpl;
+	}
+    public List<String> getLeftSort(String headSort){
+    	return sortDaoImpl.getLeftSort(headSort);
+    }
 }
